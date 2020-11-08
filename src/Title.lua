@@ -17,7 +17,7 @@ function Title:enter()
                        love.graphics.getHeight() / 2
 
     self.duration = 0
-    love.graphics.setNewFont(12)
+    local font = love.graphics.setNewFont(12)
 end
 
 function Title:update(dt)
@@ -26,15 +26,18 @@ function Title:update(dt)
 end
 
 function Title:draw()
-    love.graphics.draw(titleBackgroundImage, 0, 0)
-    love.graphics.draw(titleTextImage, 0, math.floor(titleOffset.y))
-    if ((self.duration > 3) and (math.floor(self.duration) % 2 == 0)) then
-        love.graphics.setColor(0, 0, 0, 1)
-        love.graphics
-            .rectangle("fill", centerX - 32, (centerY * 2) - 20, 90, 18)
-        love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.print("Press Anything", centerX - 32, (centerY * 2) - 20)
-    end
+    MoonshineChain.draw(function()
+        love.graphics.draw(titleBackgroundImage, 0, 0)
+        love.graphics.draw(titleTextImage, 0, math.floor(titleOffset.y))
+        if ((self.duration > 3) and (math.floor(self.duration) % 2 == 0)) then
+            love.graphics.setColor(0, 0, 0, 1)
+            love.graphics.rectangle("fill", centerX - 32, (centerY * 2) - 20,
+                                    90, 18)
+            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.print("Press Anything", centerX - 32,
+                                (centerY * 2) - 20)
+        end
+    end)
 end
 
 function Title:keypressed(key) if key then Gamestate.switch(Menu) end end

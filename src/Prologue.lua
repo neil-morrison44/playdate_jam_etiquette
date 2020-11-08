@@ -41,9 +41,11 @@ function Prologue:update(dt)
 end
 
 function Prologue:draw()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.printf(prologueText, 50, math.floor(textOffset.y), 300,
-                         'center')
+    MoonshineChain.draw(function()
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.printf(prologueText, 50, math.floor(textOffset.y), 300,
+                             'center')
+    end)
 end
 
 function Prologue:keypressed(key) if key then Gamestate.switch(Menu) end end

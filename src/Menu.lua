@@ -25,21 +25,23 @@ end
 function Menu:update(dt) self.duration = self.duration + dt end
 
 function Menu:draw()
-    love.graphics.draw(titleBackgroundImage, 0, 0)
-    love.graphics.setNewFont(20)
-    love.graphics.print("Main Menu", centerX / 4, 20)
-    love.graphics.setNewFont(18)
-    for i, option in ipairs(options) do
-        local y = 30 + (i * 30)
-        local x = centerX / 4
-        if (self.selectedOption == i) then
-            if (math.floor(self.duration * 3) % 2 == 0) then
-                love.graphics.circle("fill", x, y + 10, 5)
+    MoonshineChain.draw(function()
+        love.graphics.draw(titleBackgroundImage, 0, 0)
+        love.graphics.setNewFont(20)
+        love.graphics.print("Main Menu", centerX / 4, 20)
+        love.graphics.setNewFont(18)
+        for i, option in ipairs(options) do
+            local y = 30 + (i * 30)
+            local x = centerX / 4
+            if (self.selectedOption == i) then
+                if (math.floor(self.duration * 3) % 2 == 0) then
+                    love.graphics.circle("fill", x, y + 10, 5)
+                end
+                x = x + 12
             end
-            x = x + 12
+            love.graphics.print(option.label, x, y)
         end
-        love.graphics.print(option.label, x, y)
-    end
+    end)
 end
 
 function Menu:changeSelectedOption(change)
