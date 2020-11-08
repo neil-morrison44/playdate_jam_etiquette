@@ -12,7 +12,7 @@ local labelTween
 
 function Title:enter()
     titleOffset.y = -220
-    labelTween = tween.new(5, titleOffset, {y = -30}, "outBounce")
+    labelTween = tween.new(5, titleOffset, {y = -30}, "outElastic")
     centerX, centerY = love.graphics.getWidth() / 2,
                        love.graphics.getHeight() / 2
 

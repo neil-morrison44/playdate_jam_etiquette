@@ -7,9 +7,9 @@ local titleBackgroundImage
 
 local options = {
     {label = "Prologue", gamestate = Prologue},
-    {label = "Play (Easy)", gamestate = nil},
-    {label = "Play (Medium)", gamestate = nil},
-    {label = "Play (Hard)", gamestate = nil},
+    {label = "Play (Easy)", gamestate = Game},
+    {label = "Play (Medium)", gamestate = Game},
+    {label = "Play (Hard)", gamestate = Game},
     {label = "Return To Title", gamestate = Title}
 }
 
