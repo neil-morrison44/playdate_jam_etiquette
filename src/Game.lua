@@ -34,6 +34,8 @@ function Game:enter()
     self.duration = 0
     -- local font = love.graphics.setNewFont(12)
     self.playerHasMovedThisFrame = false
+    self.showActionWheel = false
+    self.screenshot = nil
 end
 
 function Game:update(dt)
@@ -54,6 +56,17 @@ function Game:update(dt)
 
         if (state.playerX < levelMinX) then state.playerX = levelMinX end
         if (state.playerX > levelLength) then state.playerX = levelLength end
+    end
+
+    if (self.showActionWheel) then
+        love.graphics.captureScreenshot(function(imageData)
+            self.screenshot = imageData
+            Gamestate.push(ActionWheel, {
+                "war", "peace", "love", "negotiate", "surrender", "Dance",
+                "Play"
+            })
+            self.showActionWheel = false
+        end)
     end
 end
 
@@ -98,16 +111,16 @@ function Game:draw()
         love.graphics.setColor(0, 0, 0)
         love.graphics.print("Hello", 20, floorHeight + 4)
         --
-
         love.graphics.pop()
 
     end)
 end
 
 function Game:keypressed(key)
-    -- if (key == "a") then gameState.playerX = gameState.playerX - 1 end
-    -- if (key == "d") then gameState.playerX = gameState.playerX + 1 end
+    if (key == "space") then self.showActionWheel = true end
 end
+
+function Game:resume(_, choice) print(choice) end
 
 -- function Game:mousepressed(_, _, button)
 --     if (button == 1) then Gamestate.switch(Menu) end
