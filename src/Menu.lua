@@ -7,9 +7,9 @@ local titleBackgroundImage
 
 local options = {
     {label = "Prologue", gamestate = Prologue},
-    {label = "Play (Easy)", gamestate = Game},
-    {label = "Play (Medium)", gamestate = Game},
-    {label = "Play (Hard)", gamestate = Game},
+    {label = "Play (Easy)", ruleMode = 1, gamestate = Game},
+    {label = "Play (Medium)", ruleMode = 2, gamestate = Game},
+    {label = "Play (Hard)", ruleMode = 3, gamestate = Game},
     {label = "Return To Title", gamestate = Title}
 }
 
@@ -60,9 +60,11 @@ function Menu:keypressed(key)
 end
 
 function Menu:selectGameState()
-    local nextGameState = options[self.selectedOption].gamestate
-    print(nextGameState)
-    print(options[self.selectedOption].label)
+    local selected = options[self.selectedOption]
+    local nextGameState = selected.gamestate
+
+    if (selected.ruleMode) then Rules:generate(selected.ruleMode) end
+
     if (nextGameState ~= nil) then Gamestate.switch(nextGameState) end
 end
 

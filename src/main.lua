@@ -1,12 +1,15 @@
 -- Hump Gamestate Library --
 Gamestate = require("lib/gamestate")
 
+Rules = require("rules")
+
 -- Your Gamestates --
 Title = require("Title")
 Prologue = require("Prologue")
 Game = require("Game")
 ActionWheel = require("ActionWheel")
 Menu = require("Menu")
+
 local moonshine = require("lib/moonshine")
 -- should find out how to have the font not anti-alias then use this palette
 -- local palette = {{50, 47, 41}, {50, 47, 41}, {177, 174, 168}, {177, 174, 168}}
