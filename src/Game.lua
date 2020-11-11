@@ -22,9 +22,16 @@ local floorHeight = (240 - 28)
 
 local levelLength = 1200
 local levelMinX = -160
+local startingY = -120
 
 function Game:enter()
-    state = {x = 0, y = -120, image = 1, podY = -220, playerX = 0}
+    state = {
+        x = 0,
+        y = startingY,
+        image = 1,
+        podY = startingY - 100,
+        playerX = 0
+    }
     podTween = tween.new(landingTime, state, {podY = -10, image = 3},
                          "outBounce")
     sceneTween = tween.new(panningTime, state, {y = 0}, "linear")
@@ -36,6 +43,21 @@ function Game:enter()
     self.playerHasMovedThisFrame = false
     self.showActionWheel = false
     self.screenshot = nil
+
+    self.backgroundImage = Game:generateBackground()
+end
+
+function Game:generateBackground()
+    local canvas = love.graphics.newCanvas((levelLength / 2) + 400,
+                                           floorHeight - startingY)
+    local imageData = canvas:newImageData()
+
+    imageData:mapPixel(function()
+        if (math.random() < 0.05) then return 0, 0, 0, 1 end
+        return 1, 1, 1, 1
+    end)
+
+    return love.graphics.newImage(imageData)
 end
 
 function Game:update(dt)
@@ -78,6 +100,16 @@ function Game:draw()
         love.graphics.rectangle("fill", 0, 0, 400, 240)
 
         love.graphics.push()
+
+        love.graphics.translate(-math.floor(state.playerX / 2),
+                                -math.floor(state.y))
+
+        love.graphics.draw(self.backgroundImage, levelMinX / 2, -120)
+
+        love.graphics.pop()
+
+        love.graphics.push()
+
         love.graphics
             .translate(-math.floor(state.playerX), -math.floor(state.y))
 
