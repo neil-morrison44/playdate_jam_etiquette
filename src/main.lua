@@ -4,11 +4,11 @@ Gamestate = require("lib/gamestate")
 Rules = require("rules")
 
 -- Your Gamestates --
-Title = require("Title")
-Prologue = require("Prologue")
-Game = require("Game")
-ActionWheel = require("ActionWheel")
-Menu = require("Menu")
+Title = require("./gamestates/Title")
+Prologue = require("./gamestates/Prologue")
+Game = require("./gamestates/Game")
+ActionWheel = require("./gamestates/ActionWheel")
+Menu = require("./gamestates/Menu")
 
 local moonshine = require("lib/moonshine")
 -- should find out how to have the font not anti-alias then use this palette

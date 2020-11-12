@@ -3,7 +3,7 @@
 ----------------------
 local ActionWheel = {}
 local ActionWheelOffset = {x = 0, y = 0}
-local tween = require("lib/tween")
+local tween = require("../lib/tween")
 local centerX, centerY
 local MAX_TEXT_SIZE = 60
 

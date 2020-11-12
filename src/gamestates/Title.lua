@@ -3,7 +3,7 @@
 ----------------------
 local Title = {}
 local titleOffset = {x = 0, y = 0}
-local tween = require("lib/tween")
+local tween = require("../lib/tween")
 local titleTextImage = love.graphics.newImage("assets/img/title_text.png")
 local titleBackgroundImage = love.graphics.newImage(
                                  "assets/img/title_background.png")

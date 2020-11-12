@@ -3,7 +3,7 @@
 ----------------------
 local Game = {}
 local state = nil
-local tween = require("lib/tween")
+local tween = require("../lib/tween")
 local GamePodFlight = love.graphics.newImage("assets/img/game_pod_flight.png")
 local GamePodLanding = love.graphics.newImage("assets/img/game_pod_landing.png")
 local GamePodLanded = love.graphics.newImage("assets/img/game_pod_landed.png")

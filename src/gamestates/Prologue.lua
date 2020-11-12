@@ -3,7 +3,7 @@
 ----------------------
 local Prologue = {}
 local textOffset = {x = 0, y = 0}
-local tween = require("lib/tween")
+local tween = require("../lib/tween")
 local textTween
 
 local prologueText = [[
