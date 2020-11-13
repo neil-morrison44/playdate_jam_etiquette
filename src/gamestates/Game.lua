@@ -4,13 +4,13 @@
 local Game = {}
 local state = nil
 local tween = require("../lib/tween")
+local characters = require("./Characters")
 local GamePodFlight = love.graphics.newImage("assets/img/game_pod_flight.png")
 local GamePodLanding = love.graphics.newImage("assets/img/game_pod_landing.png")
 local GamePodLanded = love.graphics.newImage("assets/img/game_pod_landed.png")
 local PodImages = {GamePodFlight, GamePodLanding, GamePodLanded}
 
-local PlayerCharacterImage = love.graphics.newImage(
-                                 "assets/img/characters/player.png")
+local hatsImage = love.graphics.newImage("assets/img/hats.png")
 
 local centerX, centerY
 local podTween
@@ -23,6 +23,24 @@ local floorHeight = (240 - 28)
 local levelLength = 1200
 local levelMinX = -160
 local startingY = -120
+local startingPlayerX = 200
+
+local hatDimensions = hatsImage:getDimensions()
+local hatQuads = {
+    love.graphics.newQuad(60 * 0, 0, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 1, 0, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 2, 0, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 3, 0, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 4, 0, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 5, 0, 60, 60, hatsImage:getDimensions()),
+
+    love.graphics.newQuad(60 * 0, 60, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 1, 60, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 2, 60, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 3, 60, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 4, 60, 60, 60, hatsImage:getDimensions()),
+    love.graphics.newQuad(60 * 5, 60, 60, 60, hatsImage:getDimensions())
+}
 
 function Game:enter()
     state = {
@@ -30,7 +48,7 @@ function Game:enter()
         y = startingY,
         image = 1,
         podY = startingY - 100,
-        playerX = 0
+        playerX = startingPlayerX
     }
     podTween = tween.new(landingTime, state, {podY = -10, image = 3},
                          "outBounce")
@@ -69,6 +87,7 @@ function Game:update(dt)
     if (self.duration > landingTime) then
         if (love.keyboard.isDown("a")) then
             state.playerX = state.playerX - 1
+
             self.playerHasMovedThisFrame = true
         end
         if (love.keyboard.isDown("d")) then
@@ -78,6 +97,7 @@ function Game:update(dt)
 
         if (state.playerX < levelMinX) then state.playerX = levelMinX end
         if (state.playerX > levelLength) then state.playerX = levelLength end
+        state.x = state.playerX - startingPlayerX
     end
 
     if (self.showActionWheel) then
@@ -92,7 +112,18 @@ function Game:update(dt)
     end
 end
 
-function Game:renderCharacter(character, hat, x, y) end
+function Game:renderCharacter(character, hat, x, y)
+    local image = characters[character].image
+    local xPos = math.floor(x - (image:getWidth() / 2))
+    local yPos = math.floor(y - (image:getHeight()))
+    love.graphics.draw(image, xPos, yPos)
+    if (hat ~= 0) then
+        local xHatPos = (xPos + characters[character].hatPos[1]) - 34
+        local yHatPos = (yPos + characters[character].hatPos[2]) - 48
+        love.graphics.draw(hatsImage, hatQuads[hat], xHatPos, yHatPos)
+    end
+    love.graphics.draw(image, 0, 0)
+end
 
 function Game:draw()
     MoonshineChain.draw(function()
@@ -101,8 +132,7 @@ function Game:draw()
 
         love.graphics.push()
 
-        love.graphics.translate(-math.floor(state.playerX / 2),
-                                -math.floor(state.y))
+        love.graphics.translate(-math.floor(state.x / 2), -math.floor(state.y))
 
         love.graphics.draw(self.backgroundImage, levelMinX / 2, -120)
 
@@ -110,8 +140,7 @@ function Game:draw()
 
         love.graphics.push()
 
-        love.graphics
-            .translate(-math.floor(state.playerX), -math.floor(state.y))
+        love.graphics.translate(-math.floor(state.x), -math.floor(state.y))
 
         love.graphics.setColor(0, 0, 0)
         love.graphics.setLineWidth(2)
@@ -127,11 +156,12 @@ function Game:draw()
                            math.floor(state.podY))
 
         if (self.duration > landingTime) then
-            local characterY = 0
+            local characterY = floorHeight + 6
             if (self.playerHasMovedThisFrame and (math.random() > 0.5)) then
-                characterY = -2
+                characterY = characterY - 2
             end
-            love.graphics.draw(PlayerCharacterImage, state.playerX, characterY)
+            Game:renderCharacter(1, (state.x % #hatQuads) + 1, state.playerX,
+                                 characterY)
         end
 
         love.graphics.pop()
