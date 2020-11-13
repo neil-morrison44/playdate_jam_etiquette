@@ -5,7 +5,9 @@ local ActionWheel = {}
 local ActionWheelOffset = {x = 0, y = 0}
 local tween = require("../lib/tween")
 local centerX, centerY
-local MAX_TEXT_SIZE = 60
+local MAX_TEXT_SIZE = 75
+
+local hatsImage, hatQuads = require("Hats")()
 
 function ActionWheel:enter(presenter, choices)
     ActionWheelOffset.y = -220
@@ -63,16 +65,25 @@ function ActionWheel:draw()
             love.graphics.setNewFont(18)
 
             if (mode == "fill") then love.graphics.setColor(1, 1, 1) end
-            local x = (centerX + math.cos(midAngle) * (radius / 1.5)) -
-                          (MAX_TEXT_SIZE / 2)
-            local y = (centerY + math.sin(midAngle) * (radius / 1.5)) - 12
-            love.graphics.printf(choice, math.floor(x), math.floor(y),
-                                 MAX_TEXT_SIZE, "center")
+            local x = (centerX + math.cos(midAngle) * (radius / 1.5))
+            local y = (centerY + math.sin(midAngle) * (radius / 1.5))
+            self:renderChoice(choice, x, y)
         end
         love.graphics.pop()
     end)
 end
 
+function ActionWheel:renderChoice(choice, x, y)
+    if (type(choice) == "string") then
+        love.graphics.printf(choice, math.floor(x - (MAX_TEXT_SIZE / 2)),
+                             math.floor(y - 12), MAX_TEXT_SIZE, "center")
+    elseif (type(choice) == "userdata" and choice.type and choice:type() ==
+        "Quad") then
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.draw(hatsImage, choice, math.floor(x - 30),
+                           math.floor(y - 30))
+    end
+end
 -- function ActionWheel:keypressed(key) if key then Gamestate.switch(Menu) end end
 
 function ActionWheel:mousepressed(_, _, button)

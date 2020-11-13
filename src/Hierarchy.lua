@@ -1,6 +1,7 @@
 local Hierarchy = {}
 local Characters = require("Characters")
 local hatsImage, hatQuads = require("Hats")()
+local LEVELS = 3
 
 local function has_value(tab, val)
     for index, value in ipairs(tab) do if value == val then return true end end
@@ -11,8 +12,9 @@ function Hierarchy:generate()
     -- one array of just character number & hat number to avoid duplicates
     self.members = {}
     self.tree = {}
+    self.levels = LEVELS
 
-    self:addToTree(0, 3, nil)
+    self:addToTree(0, LEVELS, nil)
     self:printTree()
 end
 
@@ -45,7 +47,7 @@ function Hierarchy:addToTree(currentDepth, maxDepth, bossNode)
         bossNode = bossNode,
         memberKey = "" .. characterNumber .. "-" .. hatNumber,
         underlings = {},
-        state = {hasBeenTalkedTo = false}
+        state = {hasBeenTalkedTo = false, hasBeenApproached = false}
     }
     if (bossNode) then table.insert(bossNode.underlings, newNode) end
     table.insert(self.tree, newNode)

@@ -23,6 +23,16 @@ local Characters = {
     }, {
         image = love.graphics.newImage("assets/img/characters/alien_spotty.png"),
         hatPos = {42, 14}
+    }, {
+        image = love.graphics.newImage("assets/img/characters/alien_cloud.png"),
+        hatPos = {26, 20}
+    }, {
+        image = love.graphics.newImage("assets/img/characters/alien_robo.png"),
+        hatPos = {27, 9}
+    }, {
+        image = love.graphics
+            .newImage("assets/img/characters/alien_cricket.png"),
+        hatPos = {37, 13}
     }
 }
 

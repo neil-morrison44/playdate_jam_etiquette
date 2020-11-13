@@ -22,28 +22,18 @@ function Guide:enter()
     local font = love.graphics.setNewFont(22)
 
     self.rulesPageHeight = ruleHeight + (#Rules.activeRules * ruleHeight) + 10
-    self.ruleCharacterPortraits = {}
-
-    for index, rule in ipairs(Rules.activeRules) do
-        if (rule.values and rule.values.who) then
-            table.insert(self.ruleCharacterPortraits,
-                         self:generatePortrait(rule.values.who))
-        end
-    end
 
     self.treePageHeight = 3 * treeLevelHeight
     self.characterPortraits = {}
 
     self.pageHeights = {
-        ruleHeight + (#Rules.activeRules * ruleHeight) + 10, 3 * treeLevelHeight
+        ruleHeight + (#Rules.activeRules * ruleHeight) + 10,
+        Hierarchy.levels * treeLevelHeight
     }
 
     for index, who in ipairs(Hierarchy.tree) do
-        print(index, who)
         self.characterPortraits[who] = self:generatePortrait(who)
     end
-    print("value")
-    print(#self.characterPortraits)
 end
 
 function Guide:update(dt)
@@ -69,7 +59,7 @@ function Guide:generatePortrait(who)
     Game:renderCharacter(who.characterNumber, who.hatNumber, width / 2,
                          (height / 2.5), true)
     love.graphics.setColor(0, 0, 0, 1)
-    love.graphics.rectangle('line', 1, 1, width - 2, height - 2)
+    love.graphics.rectangle("line", 1, 1, width - 2, height - 2)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setCanvas()
     love.graphics.pop()

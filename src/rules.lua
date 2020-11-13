@@ -1,3 +1,5 @@
+local Topics = require("Topics")
+
 local Rules = {}
 
 local BASE_RULES = {
@@ -29,11 +31,10 @@ local BASE_RULES = {
         reward = 0,
         checkOn = "talk",
         init = function()
-            -- self.topic = topics:getRandomTopic
-            return {topic = "war"}
+            return {topic = Topics[math.random(1, #Topics)]}
         end,
         toString = function(rule)
-            return "Don't mention the " .. rule.values.topic .. " to anyone"
+            return "Don't mention " .. rule.values.topic .. " to anyone"
         end,
         check = function(rule, who, topic, time)
             -- if topic === self.topic then subtract self.penalty
@@ -44,11 +45,13 @@ local BASE_RULES = {
         reward = 0,
         checkOn = "talk",
         init = function()
-            return {topic = "hello", who = Hierarchy:getRandomCharacter()}
+            return {
+                topic = Topics[math.random(1, #Topics)],
+                who = Hierarchy:getRandomCharacter()
+            }
         end,
         toString = function(rule)
-            return "Don't mention the " .. rule.values.topic ..
-                       " to this guy ->"
+            return "Don't mention " .. rule.values.topic .. " to this guy ->"
         end,
         check = function(rule, who, topic, time)
             -- if topic === self.topic && who === self.who then subtract self.penalty
@@ -86,7 +89,7 @@ local BASE_RULES = {
             -- else penalty
         end
     }, {
-        label = "Talk quickly to this guy ->",
+        label = "Within the first 30 seconds talk to this guy ->",
         penalty = -5,
         reward = 10,
         checkOn = "talk",
