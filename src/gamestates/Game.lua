@@ -56,7 +56,8 @@ function Game:enter()
         characterPositions = {},
         nearestCharacter = nil,
         uiMessage = nil,
-        uiMessageTimestamp = 0
+        uiMessageTimestamp = 0,
+        timeLeft = 90
     }
     podTween = tween.new(landingTime, self.state, {podY = -10, image = 3},
                          "outBounce")
@@ -107,13 +108,27 @@ function Game:update(dt)
     podTween:update(dt)
     sceneTween:update(dt)
 
+    Rules:update(dt)
+
     if (self.state.uiMessageTimestamp < (self.duration - 5)) then
         self.state.uiMessage = nil
+    end
+
+    if (Rules.score <= 0) then
+        Gamestate.push(GameOver)
+        return
+    else
+        if (self.state.timeLeft <= 0) then
+            Gamestate.push(GameOver)
+            return
+        end
     end
 
     -- handle held keys
 
     if (self.duration > landingTime) then
+        self.state.timeLeft = self.state.timeLeft - dt
+
         if (love.keyboard.isDown("a") or love.keyboard.isDown("left")) then
             self.state.playerX = self.state.playerX - love.math.random(1, 2)
 
@@ -154,6 +169,7 @@ function Game:update(dt)
         if (not self.state.nearestCharacter.state.hasBeenApproached) then
             print("Approached someone for the first time")
             self.state.nearestCharacter.state.hasBeenApproached = true
+            Rules:checkApproach(self.state.nearestCharacter, self.playerHat)
         end
     end
 
@@ -249,14 +265,28 @@ function Game:draw()
         if (self.state.uiMessage) then
             love.graphics.printf(self.state.uiMessage, 20, floorHeight + 4, 400,
                                  "left")
-        end
-        if (self.state.nearestCharacter ~= nil) then
+        elseif (self.state.nearestCharacter ~= nil) then
             love.graphics.printf("Talk", 0, floorHeight + 4, 400, "center")
         end
+
+        love.graphics.printf(self.state.timeLeft, 0, 0, 400, "right")
+
+        Game:renderScore()
+
         --
         love.graphics.pop()
 
     end)
+end
+
+function Game:renderScore()
+    love.graphics.setColor(0, 0, 0, 1)
+    love.graphics.rectangle("line", 280, floorHeight + 4, 100, 14)
+
+    if (Rules.score < 25 and (math.floor((self.duration * 2) % 2) == 0)) then
+        return
+    end
+    love.graphics.rectangle("fill", 280, floorHeight + 4, Rules.score, 14)
 end
 
 function Game:mousepressed(x, y, button)
@@ -289,6 +319,8 @@ function Game:resume(_, choice)
     if (has_value(Topics, choice)) then
         self.state.uiMessage = "You talked about " .. choice
         self.state.uiMessageTimestamp = self.duration
+        self.state.nearestCharacter.state.hasBeenTalkedTo = true
+        Rules:checkTalk(self.state.nearestCharacter, choice, self.duration)
     end
 
     if (type(choice) == "userdata" and choice.type and choice:type() == "Quad") then

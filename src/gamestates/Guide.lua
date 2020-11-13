@@ -11,7 +11,7 @@ local rulePadding = 10
 local treeLevelHeight = ruleHeight + 20
 local portraitSize = (ruleHeight - rulePadding) - 10
 
-function Guide:enter()
+function Guide:enter(from, mode)
     self.page = 0
     self.translate = {x = 0, y = 0}
     -- labelTween = tween.new(5, GuideOffset, {y = -30}, "inoutEase")
@@ -33,6 +33,12 @@ function Guide:enter()
 
     for index, who in ipairs(Hierarchy.tree) do
         self.characterPortraits[who] = self:generatePortrait(who)
+    end
+
+    if (from == GameOver) then
+        self.mode = "gameover"
+    else
+        self.mode = "normal"
     end
 end
 
@@ -156,6 +162,13 @@ function Guide:renderRule(rule, index, y)
                            ((350 + 25) - ruleHeight) + 10, y + 5)
     end
 
+    if (self.mode == "gameover" and Rules.ruleLog[rule]) then
+        local points = Rules.ruleLog[rule]
+        love.graphics.printf("(" .. points .. " points)", 30,
+                             y + (ruleHeight - rulePadding - 30),
+                             (350 - ruleHeight), "right")
+    end
+
     love.graphics.pop()
 end
 
@@ -166,11 +179,17 @@ function Guide:transitionToPage()
 end
 
 function Guide:mousepressed(_, _, button)
+    if (self.mode == "gameover") then
+        Gamestate.push(Title)
+        return
+    end
     if (self.activeTween) then return end
     if (button == 1) then
         if (self.page ~= 1) then
             self.page = 1
             self:transitionToPage()
+        else
+            Gamestate.pop()
         end
     end
 
