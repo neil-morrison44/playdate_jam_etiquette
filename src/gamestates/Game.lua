@@ -69,12 +69,12 @@ function Game:update(dt)
     sceneTween:update(dt)
 
     if (self.duration > landingTime) then
-        if (love.keyboard.isDown("a")) then
+        if (love.keyboard.isDown("a") or love.keyboard.isDown("left")) then
             state.playerX = state.playerX - 1
 
             self.playerHasMovedThisFrame = true
         end
-        if (love.keyboard.isDown("d")) then
+        if (love.keyboard.isDown("d") or love.keyboard.isDown("right")) then
             state.playerX = state.playerX + 1
             self.playerHasMovedThisFrame = true
         end
@@ -93,12 +93,17 @@ function Game:update(dt)
     end
 end
 
-function Game:renderCharacter(character, hat, x, y)
+function Game:renderCharacter(character, hat, x, y, centerOnHatPos)
     love.graphics.push()
     love.graphics.setColor(1, 1, 1, 1)
     local image = characters[character].image
     local xPos = math.floor(x - (image:getWidth() / 2))
     local yPos = math.floor(y - (image:getHeight()))
+
+    if (centerOnHatPos) then
+        yPos = math.floor(y - characters[character].hatPos[2])
+    end
+
     love.graphics.draw(image, xPos, yPos)
     if (hat ~= 0) then
         local xHatPos = (xPos + characters[character].hatPos[1]) - 34
