@@ -77,6 +77,7 @@ end
 
 function ActionWheel:mousepressed(_, _, button)
     if (button == 1) then Gamestate.pop(self.choices[self.selectedChoice]) end
+    if (button == 2) then Gamestate.pop() end
 end
 
 function ActionWheel:wheelmoved(x, y)

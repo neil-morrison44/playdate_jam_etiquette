@@ -10,8 +10,6 @@ local GamePodLanding = love.graphics.newImage("assets/img/game_pod_landing.png")
 local GamePodLanded = love.graphics.newImage("assets/img/game_pod_landed.png")
 local PodImages = {GamePodFlight, GamePodLanding, GamePodLanded}
 
-local hatsImage = love.graphics.newImage("assets/img/hats.png")
-
 local centerX, centerY
 local podTween
 local sceneTween
@@ -25,22 +23,7 @@ local levelMinX = -160
 local startingY = -120
 local startingPlayerX = 200
 
-local hatDimensions = hatsImage:getDimensions()
-local hatQuads = {
-    love.graphics.newQuad(60 * 0, 0, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 1, 0, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 2, 0, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 3, 0, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 4, 0, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 5, 0, 60, 60, hatsImage:getDimensions()),
-
-    love.graphics.newQuad(60 * 0, 60, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 1, 60, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 2, 60, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 3, 60, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 4, 60, 60, 60, hatsImage:getDimensions()),
-    love.graphics.newQuad(60 * 5, 60, 60, 60, hatsImage:getDimensions())
-}
+local hatsImage, hatQuads = require("Hats")()
 
 function Game:enter()
     state = {
@@ -63,6 +46,7 @@ function Game:enter()
     self.screenshot = nil
 
     self.backgroundImage = Game:generateBackground()
+    self.actionWheelOptions = {}
 end
 
 function Game:generateBackground()
@@ -103,10 +87,7 @@ function Game:update(dt)
     if (self.showActionWheel) then
         love.graphics.captureScreenshot(function(imageData)
             self.screenshot = imageData
-            Gamestate.push(ActionWheel, {
-                "war", "peace", "love", "negotiate", "surrender", "Dance",
-                "Play"
-            })
+            Gamestate.push(ActionWheel, self.actionWheelOptions)
             self.showActionWheel = false
         end)
     end
@@ -178,11 +159,25 @@ function Game:draw()
     end)
 end
 
-function Game:keypressed(key)
-    if (key == "space") then self.showActionWheel = true end
+-- function Game:keypressed(key)
+--     if (key == "space") then
+--         self.actionWheelOptions = {"hats", "guide", "talk"}
+--         self.showActionWheel = true
+--     end
+-- end
+
+function Game:mousepressed(x, y, button)
+    if (button == 1) then
+        self.actionWheelOptions = {"hats", "guide", "talk"}
+        self.showActionWheel = true
+    end
+    if (button == 2) then -- do nothing
+    end
 end
 
-function Game:resume(_, choice) print(choice) end
+function Game:resume(_, choice)
+    if (choice == "guide") then Gamestate.push(Guide) end
+end
 
 -- function Game:mousepressed(_, _, button)
 --     if (button == 1) then Gamestate.switch(Menu) end

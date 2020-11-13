@@ -43,7 +43,7 @@ end
 function Title:keypressed(key) if key then Gamestate.switch(Menu) end end
 
 function Title:mousepressed(_, _, button)
-    if (button == 1) then Gamestate.switch(Menu) end
+    if (button == 1 or button == 2) then Gamestate.switch(Menu) end
 end
 
 return Title

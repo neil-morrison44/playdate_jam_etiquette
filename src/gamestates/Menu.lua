@@ -56,21 +56,24 @@ function Menu:keypressed(key)
     if (key == "s" or key == "down") then self:changeSelectedOption(1) end
     if (key == "w" or key == "up") then self:changeSelectedOption(-1) end
 
-    if (key == "space") then Menu:selectGameState() end
+    -- if (key == "space") then Menu:selectGameState() end
 end
 
 function Menu:selectGameState()
     local selected = options[self.selectedOption]
     local nextGameState = selected.gamestate
 
-    if (selected.ruleMode) then Rules:generate(selected.ruleMode) end
+    if (selected.ruleMode) then
+        Hierarchy:generate()
+        Rules:generate(selected.ruleMode)
+    end
 
     if (nextGameState ~= nil) then Gamestate.switch(nextGameState) end
 end
 
 function Menu:mousepressed(x, y, button)
-    print(button)
     if (button == 1) then Menu:selectGameState() end
+    if (button == 2) then Gamestate.switch(Title) end
 end
 
 function Menu:wheelmoved(x, y)
