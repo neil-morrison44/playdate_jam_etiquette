@@ -1,18 +1,5 @@
 local Rules = {}
 
-function dump(o)
-    if type(o) == 'table' then
-        local s = '{ '
-        for k, v in pairs(o) do
-            if type(k) ~= 'number' then k = '"' .. k .. '"' end
-            s = s .. '[' .. k .. '] = ' .. dump(v) .. ','
-        end
-        return s .. '} '
-    else
-        return tostring(o)
-    end
-end
-
 local BASE_RULES = {
     {
         label = "Talk To Underlings First",
@@ -43,10 +30,10 @@ local BASE_RULES = {
         checkOn = "talk",
         init = function()
             -- self.topic = topics:getRandomTopic
-            return {topic = "hello"}
+            return {topic = "war"}
         end,
-        toString = function()
-            return "Don't mention " .. self.topic.theName .. " to anyone"
+        toString = function(rule)
+            return "Don't mention the " .. rule.values.topic .. " to anyone"
         end,
         check = function(rule, who, topic, time)
             -- if topic === self.topic then subtract self.penalty
@@ -57,11 +44,11 @@ local BASE_RULES = {
         reward = 0,
         checkOn = "talk",
         init = function()
-            -- self.topic = topics:getRandomTopic
-            -- self.who = hierarchy:getRandomPerson()
+            return {topic = "hello", who = Hierarchy:getRandomCharacter()}
         end,
-        toString = function()
-            return "Don't mention " .. self.topic.theName .. " to"
+        toString = function(rule)
+            return "Don't mention the " .. rule.values.topic ..
+                       " to this guy ->"
         end,
         check = function(rule, who, topic, time)
             -- if topic === self.topic && who === self.who then subtract self.penalty
@@ -99,13 +86,14 @@ local BASE_RULES = {
             -- else penalty
         end
     }, {
-        label = "Talk to X quickly",
+        label = "Talk quickly to this guy ->",
         penalty = -5,
         reward = 10,
         checkOn = "talk",
         incompatableWith = {8},
         init = function()
             -- self.who = hierarchy:getRandomPerson()
+            return {who = Hierarchy:getRandomCharacter()}
         end,
         check = function(rule, who, topic, time)
             if (time > 30) then
@@ -121,7 +109,7 @@ local MODES = {
     {name = "Easy", rules = 4, startingHappiness = 50, maxHappiness = 100},
     {name = "Medium", rules = 6, startingHappiness = 25, maxHappiness = 50}, {
         name = "Hard",
-        rules = 8,
+        rules = 16,
         ruleBookChecks = 2,
         ruleBookPenaltyPerSec = 1,
         startingHappiness = 5,
@@ -140,7 +128,7 @@ function Rules:initNewRule(baseRule)
 
     if (activeRule.init) then activeRule.values = activeRule:init() end
     -- print(dump(baseRule))
-    print(dump(activeRule))
+    -- print(dump(activeRule))
     return activeRule
 end
 

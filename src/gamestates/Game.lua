@@ -94,6 +94,8 @@ function Game:update(dt)
 end
 
 function Game:renderCharacter(character, hat, x, y)
+    love.graphics.push()
+    love.graphics.setColor(1, 1, 1, 1)
     local image = characters[character].image
     local xPos = math.floor(x - (image:getWidth() / 2))
     local yPos = math.floor(y - (image:getHeight()))
@@ -103,7 +105,7 @@ function Game:renderCharacter(character, hat, x, y)
         local yHatPos = (yPos + characters[character].hatPos[2]) - 48
         love.graphics.draw(hatsImage, hatQuads[hat], xHatPos, yHatPos)
     end
-    love.graphics.draw(image, 0, 0)
+    love.graphics.pop()
 end
 
 function Game:draw()

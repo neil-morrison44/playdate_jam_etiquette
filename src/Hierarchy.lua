@@ -16,6 +16,10 @@ function Hierarchy:generate()
     self:printTree()
 end
 
+function Hierarchy:getRandomCharacter()
+    return self.tree[love.math.random(1, #self.tree)]
+end
+
 function Hierarchy:printTree()
     for index, character in ipairs(self.tree) do
         print("---")
@@ -40,7 +44,8 @@ function Hierarchy:addToTree(currentDepth, maxDepth, bossNode)
         hatNumber = hatNumber,
         bossNode = bossNode,
         memberKey = "" .. characterNumber .. "-" .. hatNumber,
-        underlings = {}
+        underlings = {},
+        state = {hasBeenTalkedTo = false}
     }
     if (bossNode) then table.insert(bossNode.underlings, newNode) end
     table.insert(self.tree, newNode)
