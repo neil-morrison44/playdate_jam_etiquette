@@ -40,8 +40,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Asset (love)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -50,8 +49,7 @@ jobs:
           asset_path: '${{ steps.love-build.outputs.love-filename }}'
           asset_name: love-build.zip
           asset_content_type: application/zip
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Asset (mac)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -60,8 +58,7 @@ jobs:
           asset_path: '${{ steps.love-build.outputs.macos-filename }}'
           asset_name: mac-build.zip
           asset_content_type: application/zip
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Asset (win32)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -70,8 +67,7 @@ jobs:
           asset_path: '${{ steps.love-build.outputs.win32-filename }}'
           asset_name: win32-build.zip
           asset_content_type: application/zip
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Asset (win64)
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
