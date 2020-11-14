@@ -54,7 +54,7 @@ jobs:
 
       - name: Get short SHA
         id: slug
-        run: echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)
+        run: echo "::set-output name=sha8::${echo ${{ github.sha }} | cut -c1-8}
 
       - name: Create Release
         id: create_release
