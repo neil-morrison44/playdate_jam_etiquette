@@ -14,18 +14,28 @@ local prologueText = [[
     You are agent Zaphloyd Gyan, a diplomat attached to the starship named << I asked you not to rob Banks >>
 
 
-    You will be sent as our envoy to conduct tense political negotiations with the representives of other cultures.
+    You will be sent as our Cultural representative to conduct tense political negotiations with other cultures.
+    If you manage not to embarras us for 45 seconds that'll probably be enough.
 
-    An etiquette guide will be prepared for you upon arrival.
+    They'll slowly grow to dislike you so keep an eye on the bar in the lower right corner.
 
+    You'll need to talk to them about different topics, but be careful not to mention anything uncouth.
+
+    An etiquette guide will be prepared for you upon your arrival, accessable from the Action Wheel (right click).
 
 
     And Zaphloyd, try to avoid causing another intergalatic war.
+
+    (WASD is D-Pad, Mouse Scroll is Crank, Left click is A, Right click is B)
+
+    (Press anything to exit)
 ]]
+
+local TIME_TO_FINISH = 38
 
 function Prologue:enter()
     textOffset.y = 200
-    textTween = tween.new(20, textOffset, {y = -180}, "linear")
+    textTween = tween.new(38, textOffset, {y = -380}, "linear")
     centerX, centerY = love.graphics.getWidth() / 2,
                        love.graphics.getHeight() / 2
 
@@ -37,7 +47,7 @@ function Prologue:update(dt)
     self.duration = self.duration + dt
     textTween:update(dt)
 
-    if (self.duration > 23) then Gamestate.switch(Menu) end
+    -- if (self.duration > TIME_TO_FINISH + 3) then Gamestate.switch(Menu) end
 end
 
 function Prologue:draw()
@@ -51,7 +61,7 @@ end
 function Prologue:keypressed(key) if key then Gamestate.switch(Menu) end end
 
 function Prologue:mousepressed(_, _, button)
-    if (button == 1 or button == 1) then Gamestate.switch(Menu) end
+    if (button == 1 or button == 2) then Gamestate.switch(Menu) end
 end
 
 return Prologue

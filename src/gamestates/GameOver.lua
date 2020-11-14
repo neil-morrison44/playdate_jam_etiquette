@@ -4,8 +4,7 @@
 local GameOver = {}
 local loseBackgroundImage = love.graphics.newImage(
                                 "assets/img/gameover_lose.png")
-local winBackgroundImage = love.graphics
-                               .newImage("assets/img/gameover_lose.png")
+local winBackgroundImage = love.graphics.newImage("assets/img/gameover_win.png")
 local centerX, centerY
 
 function GameOver:enter()

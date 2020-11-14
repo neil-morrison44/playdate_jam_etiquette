@@ -1,3 +1,3 @@
-local Topics = {"war", "weather", "sport", "history", "love", "others"}
+local Topics = {"war", "weather", "sport", "history", "love", "gossip", "art"}
 
 return Topics

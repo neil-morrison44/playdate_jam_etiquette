@@ -164,7 +164,7 @@ function Guide:renderRule(rule, index, y)
 
     if (self.mode == "gameover" and Rules.ruleLog[rule]) then
         local points = Rules.ruleLog[rule]
-        love.graphics.printf("(" .. points .. " points)", 30,
+        love.graphics.printf("(" .. math.floor(points) .. " points)", 30,
                              y + (ruleHeight - rulePadding - 30),
                              (350 - ruleHeight), "right")
     end

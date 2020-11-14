@@ -57,7 +57,7 @@ function Game:enter()
         nearestCharacter = nil,
         uiMessage = nil,
         uiMessageTimestamp = 0,
-        timeLeft = 90
+        timeLeft = 45
     }
     podTween = tween.new(landingTime, self.state, {podY = -10, image = 3},
                          "outBounce")
@@ -108,8 +108,6 @@ function Game:update(dt)
     podTween:update(dt)
     sceneTween:update(dt)
 
-    Rules:update(dt)
-
     if (self.state.uiMessageTimestamp < (self.duration - 5)) then
         self.state.uiMessage = nil
     end
@@ -124,10 +122,13 @@ function Game:update(dt)
         end
     end
 
-    -- handle held keys
+    -- things to do only after we've landed
 
     if (self.duration > landingTime) then
+        Rules:update(dt)
         self.state.timeLeft = self.state.timeLeft - dt
+
+        -- handle held keys
 
         if (love.keyboard.isDown("a") or love.keyboard.isDown("left")) then
             self.state.playerX = self.state.playerX - love.math.random(1, 2)
@@ -283,7 +284,7 @@ function Game:renderScore()
     love.graphics.setColor(0, 0, 0, 1)
     love.graphics.rectangle("line", 280, floorHeight + 4, 100, 14)
 
-    if (Rules.score < 25 and (math.floor((self.duration * 2) % 2) == 0)) then
+    if (Rules.score < 25 and (math.floor((self.duration * 4) % 2) == 0)) then
         return
     end
     love.graphics.rectangle("fill", 280, floorHeight + 4, Rules.score, 14)

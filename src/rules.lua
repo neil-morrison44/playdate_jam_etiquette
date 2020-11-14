@@ -24,9 +24,9 @@ local BASE_RULES = {
             end
         end
     }, {
-        label = "Talk To Boss First",
+        label = "Talk To Bosses First",
         penalty = -15,
-        reward = 10,
+        reward = 5,
         checkOn = "talk",
         incompatableWith = {1, 2},
         check = function(rule, who, topic, time)
@@ -88,7 +88,7 @@ local BASE_RULES = {
     }, {
         label = "Wear a different hat",
         penalty = -15,
-        reward = 10,
+        reward = 3,
         checkOn = "approach",
         incompatableWith = {5, 6, 7},
         check = function(rule, who, myHat)
@@ -132,8 +132,8 @@ local BASE_RULES = {
         end
     }, {
         label = "Don't repeat yourself",
-        penalty = -5,
-        reward = 5,
+        penalty = -15,
+        reward = 3,
         checkOn = "talk",
         incompatableWith = {9},
         init = function() return {topicsDiscussed = {}} end,
@@ -158,13 +158,13 @@ local MODES = {
         rules = 4,
         startingHappiness = 50,
         maxHappiness = 100,
-        lossPerSecond = 0.1
+        lossPerSecond = 1.05
     }, {
         name = "Medium",
         rules = 6,
         startingHappiness = 25,
         maxHappiness = 50,
-        lossPerSecond = 0.2
+        lossPerSecond = 1.5
     }, {
         name = "Hard",
         rules = 12,
@@ -172,7 +172,7 @@ local MODES = {
         ruleBookPenalty = 1,
         startingHappiness = 15,
         maxHappiness = 25,
-        lossPerSecond = 0.3
+        lossPerSecond = 1.5
     }
 }
 

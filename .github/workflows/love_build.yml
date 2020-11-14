@@ -1,0 +1,16 @@
+name: LÖVE Build
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+    - uses: nhartland/love-build@v1-beta2
+    with:
+      app_name: 'Oops You Started An Intergalatic War'
+      love_version: '11.3'
+      source_dir: 'src'
