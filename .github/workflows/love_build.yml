@@ -30,6 +30,20 @@ jobs:
         with:
           name: love-build
           path: '${{ steps.love-build.outputs.love-filename }}'
+      - uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
+          CHANNEL: windows
+          ITCH_GAME: oops-you-started-an-intergalactic-war
+          ITCH_USER: monkeymad2
+          PACKAGE: '${{ steps.love-build.outputs.win64-filename }}'
+      - uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
+          CHANNEL: mac
+          ITCH_GAME: oops-you-started-an-intergalactic-war
+          ITCH_USER: monkeymad2
+          PACKAGE: '${{ steps.love-build.outputs.macos-filename }}'
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
