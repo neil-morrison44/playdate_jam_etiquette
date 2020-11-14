@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: love-build
+      - id: love-build
         uses: nhartland/love-build@v1-beta2
         with:
           app_name: Oops You Started An Intergalactic War
