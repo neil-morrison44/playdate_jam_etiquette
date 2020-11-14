@@ -30,75 +30,27 @@ jobs:
         with:
           name: love-build
           path: '${{ steps.love-build.outputs.love-filename }}'
-      - uses: josephbmanley/butler-publish-itchio-action@master
+      - name: itch.io upload (win64)
+        uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
           CHANNEL: windows
           ITCH_GAME: oops-you-started-an-intergalactic-war
           ITCH_USER: monkeymad2
           PACKAGE: '${{ steps.love-build.outputs.win64-filename }}'
-      - uses: josephbmanley/butler-publish-itchio-action@master
+      - name: itch.io upload (mac)
+        uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
           CHANNEL: mac
           ITCH_GAME: oops-you-started-an-intergalactic-war
           ITCH_USER: monkeymad2
           PACKAGE: '${{ steps.love-build.outputs.macos-filename }}'
-      - uses: josephbmanley/butler-publish-itchio-action@master
+      - name: itch.io upload (löve)
+        uses: josephbmanley/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
           CHANNEL: love
           ITCH_GAME: oops-you-started-an-intergalactic-war
           ITCH_USER: monkeymad2
           PACKAGE: '${{ steps.love-build.outputs.love-filename }}'
-
-      - name: Get short SHA
-        id: slug
-        run: echo "::set-output name=sha8::${echo ${{ github.sha }} | cut -c1-8}
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.slug.outputs.sha8 }}
-          release_name: Release ${{ steps.slug.outputs.sha8 }}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset (love)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: '${{ steps.love-build.outputs.love-filename }}'
-          asset_name: love-build.zip
-          asset_content_type: application/zip
-      - name: Upload Release Asset (mac)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: '${{ steps.love-build.outputs.macos-filename }}'
-          asset_name: mac-build.zip
-          asset_content_type: application/zip
-      - name: Upload Release Asset (win32)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: '${{ steps.love-build.outputs.win32-filename }}'
-          asset_name: win32-build.zip
-          asset_content_type: application/zip
-      - name: Upload Release Asset (win64)
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: '${{ steps.love-build.outputs.win64-filename }}'
-          asset_name: win64-build.zip
-          asset_content_type: application/zip
