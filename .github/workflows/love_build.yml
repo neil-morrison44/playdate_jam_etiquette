@@ -11,7 +11,7 @@ jobs:
       - name: love-build
         uses: nhartland/love-build@v1-beta2
         with:
-          app_name: Oops You Started An Intergalatic War
+          app_name: Oops You Started An Intergalactic War
           love_version: '11.3'
           source_dir: src
       - uses: actions/upload-artifact@v1
