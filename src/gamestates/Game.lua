@@ -24,6 +24,7 @@ local startingY = -120
 local startingPlayerX = 200
 
 local hatsImage, hatQuads = require("Hats")()
+local STARTING_TIME = 45
 
 local function shuffle(x)
     local shuffled = {}
@@ -57,7 +58,7 @@ function Game:enter()
         nearestCharacter = nil,
         uiMessage = nil,
         uiMessageTimestamp = 0,
-        timeLeft = 45
+        timeLeft = STARTING_TIME
     }
     podTween = tween.new(landingTime, self.state, {podY = -10, image = 3},
                          "outBounce")
@@ -262,6 +263,7 @@ function Game:draw()
         love.graphics.translate(0, -math.floor(self.state.y))
 
         -- UI
+        love.graphics.setNewFont(18)
         love.graphics.setColor(0, 0, 0)
         if (self.state.uiMessage) then
             love.graphics.printf(self.state.uiMessage, 20, floorHeight + 4, 400,
@@ -270,7 +272,11 @@ function Game:draw()
             love.graphics.printf("Talk", 0, floorHeight + 4, 400, "center")
         end
 
-        love.graphics.printf(self.state.timeLeft, 0, 0, 400, "right")
+        if (self.state.timeLeft ~= STARTING_TIME) then
+            love.graphics.setNewFont(22)
+            love.graphics.printf(math.floor(self.state.timeLeft), 0, 0, 400,
+                                 "right")
+        end
 
         Game:renderScore()
 
