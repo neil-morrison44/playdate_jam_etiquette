@@ -3,5 +3,6 @@ A Love2D game around the theme "etiquette", with PlayDate constraints
 
 ![A Playthrough on Easy](screenshots/easy_playthrough.gif)
 
+[itch.io Page with downloads](https://monkeymad2.itch.io/oops-you-started-an-intergalactic-war)
 
 [For the Unofficial Playdate Jam](https://itch.io/jam/unofficial-playdate-jam)
