@@ -44,6 +44,13 @@ jobs:
           ITCH_GAME: oops-you-started-an-intergalactic-war
           ITCH_USER: monkeymad2
           PACKAGE: '${{ steps.love-build.outputs.macos-filename }}'
+      - uses: josephbmanley/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
+          CHANNEL: love
+          ITCH_GAME: oops-you-started-an-intergalactic-war
+          ITCH_USER: monkeymad2
+          PACKAGE: '${{ steps.love-build.outputs.love-filename }}'
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
